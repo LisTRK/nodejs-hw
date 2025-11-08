@@ -22,15 +22,11 @@ app.use(cors());
 app.use(helmet());
 app.use(loggerHttp());
 
-
-
+//routes
 app.use(noteRouters)
 
 
-
-
-
-
+//error pages
 app.use(notFoundHandler);
 
 
