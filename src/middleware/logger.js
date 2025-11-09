@@ -1,8 +1,7 @@
 
 import pino from 'pino-http';
 
-export const loggerHttp = () =>  {
-    return pino({
+export const loggerHttp = pino({
     level: 'info',
     transport: {
       target: 'pino-pretty',
@@ -15,4 +14,3 @@ export const loggerHttp = () =>  {
       },
     },
   })
-}
