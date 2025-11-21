@@ -8,4 +8,10 @@ tag: {type: String, enum: ["Work", "Personal", "Meeting", "Shopping", "Ideas", "
     timestamps:true,
 });
 
+
+noteSchema.index({title: "text", content: "text"});
+// noteSchema.index({title: "text"});
+
+
+
 export const Note =  mongoose.model("Note", noteSchema);

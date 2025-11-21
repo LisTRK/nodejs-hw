@@ -8,6 +8,7 @@ import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import { loggerHttp } from './middleware/logger.js';
 import noteRouters from './routes/notesRoutes.js';
+import { errors, isCelebrateError } from 'celebrate';
 
 
 const app = express();
@@ -20,14 +21,20 @@ const PORT = process.env.PORT ?? 3000;
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
-app.use(loggerHttp());
+app.use(loggerHttp);
 
 //routes
 app.use(noteRouters)
 
 
+
+
+app.use(errors());
+
+
 //error pages
 app.use(notFoundHandler);
+
 
 
 app.use(errorHandler);
