@@ -2,14 +2,15 @@ import bcrypt from "bcrypt";
 import { User } from "../models/user.js";
 import { createSession, setSessionCookies } from "../services/auth.js";
 import { Session } from "../models/session.js";
+import createHttpError from "http-errors";
 
 
 
-export const createUser = async (req, res)=>{
+export const registerUser = async (req, res)=>{
     const {email, password} =  req.body;
 
     const existingUser = await User.findOne({email});
-    if(existingUser){ throw createHttpError(404, 'Email in use');}
+    if(existingUser){ throw createHttpError(400, 'Email in use');}
 
     const heshedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({
@@ -21,7 +22,7 @@ export const createUser = async (req, res)=>{
 
     setSessionCookies(res, newSession);
     
-res.status(201).json(newUser);
+res.status(200).json(newUser);
 }
 
 
@@ -53,12 +54,7 @@ export const logoutUser = async ( req, res ) => {
     console.log("LOGOUT WORKED");
     
     const { sessionId } = req.cookies;
-    console.log("sessionId", sessionId);
-
-    if(!sessionId){
-        console.log("Session Id UNDEFIND");
-        
-    }
+    
     if(sessionId ){
         await Session.deleteOne({ _id: sessionId });
     }
@@ -85,7 +81,7 @@ export const refreshUserSession = async (req, res) => {
     new Date() > new Date(session.refreshTokenValidUntil);
 
   if (isSessionTokenExpired) {
-    throwcreateHttpError(401, 'Session token expired');
+    throw createHttpError(401, 'Session token expired');
   }
 
   await Session.deleteOne({
