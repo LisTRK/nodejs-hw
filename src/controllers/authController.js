@@ -17,18 +17,25 @@ export const registerUser = async (req, res)=>{
 
     const existingUser = await User.findOne({email});
     if(existingUser){ throw createHttpError(400, 'Email in use');}
-
-    const heshedPassword = await bcrypt.hash(password, 10);
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     const newUser = await User.create({
-        email, 
-        password: heshedPassword,
+      email, 
+      password: hashedPassword,
     });
 
-    const newSession = await createSession(newUser._id);
+      console.log("newUser created", newUser);
+      
+    
 
+    if(!newUser){console.log("Error reg");
+    }
+
+    const newSession = await createSession(newUser._id);
     setSessionCookies(res, newSession);
     
-res.status(201).json(newUser);
+  res.status(201).json(newUser);
 }
 
 
@@ -57,7 +64,6 @@ res.status(200).json(user);
 
 
 export const logoutUser = async ( req, res ) => {
-    console.log("LOGOUT WORKED");
     
     const { sessionId } = req.cookies;
     

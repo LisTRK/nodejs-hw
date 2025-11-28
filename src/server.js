@@ -9,7 +9,7 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { loggerHttp } from './middleware/logger.js';
 import noteRouter from './routes/notesRoutes.js';
 import authRouter from './routes/authRoutes.js';
-import userRouter from './routes/userRouter.js';
+import userRouter from './routes/userRoutes.js';
 import { errors} from 'celebrate';
 import cookieParser from "cookie-parser";
 

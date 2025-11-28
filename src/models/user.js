@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    username: {type: String, trim: true},
+    username: {type: String, required: false},
     email: {type: String, unique: true, required: true, trim: true},
     password: { type: String, required: true, minlength: 8},
-    avatar: {type: String,
-    default: "https://ac.goit.global/fullstack/react/default-avatar.jpg"}
+    avatar: {
+      type: String,
+      required: false,
+      default: "<https://ac.goit.global/fullstack/react/default-avatar.jpg>",
+    },
 },
 {
     timestamps: true,
@@ -17,6 +20,7 @@ userSchema.pre("save", function(next) {
   if(!this.username){
     this.username = this.email;
   }
+  next();
 })
 
 userSchema.methods.toJSON = function () {
